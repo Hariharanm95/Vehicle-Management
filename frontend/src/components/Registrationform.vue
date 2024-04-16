@@ -1,17 +1,17 @@
 <template>
-  <form @submit.prevent="handleSubmit" method="post" >
+  <form @submit.prevent="handleSubmit" method="post" class="registration">
 
     <label>Destination Place:</label>
     <input type="text" required v-model="registration.place">
     
     <label>date:</label>
-    <input type="text" required v-model="registration.date">
+    <input type="date" required v-model="registration.date">
 
     <label>Time:</label>
     <input type="text" required v-model="registration.time">
 
     <label>people Count:</label>
-    <input type="text" required v-model="registration.peopleCount">
+    <input type="number" required v-model="registration.peopleCount">
 
     <label>Driver Name:</label>
     <input type="text" required v-model="registration.driverName">
@@ -87,13 +87,13 @@ export default {
         text-align: left;
         padding: 40px;
         border-radius: 10px;
-        display: flex; /* Add flexbox */
-        flex-direction: column; /* Set flex direction to column */
-        justify-content: space-between; /* Space evenly between elements */
-        height: 100%; /* Set height to 100% */
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+        
     }
 
-    label {
+    .registration label {
         color: #aaa;
         display: inline-block;
         margin: 15px 0;
@@ -103,8 +103,8 @@ export default {
         font-weight: bold;
     }
 
-    input,
-    select {
+    .registration input,
+    .registration select {
         display: inline-block;
         width: 100%;
         box-sizing: border-box;
@@ -115,15 +115,15 @@ export default {
 
     .submit button {
         background: #b78bfe;
-        padding: 10px 20px;
+        padding: 10px 10px;
         color: white;
         border-radius: 10px;
-        
     }
 
     .submit {
+        grid-column: 1 / -1;
         text-align: center;
-        padding: 20px;
+        padding: 10px;
     }
 
     .error {

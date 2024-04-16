@@ -6,7 +6,7 @@ const RegistrationSchema = new mongoose.Schema({
             required: true
         },
         date: {
-            type: String,
+            type: Date,
             required: true
         },
         time: {
@@ -14,7 +14,7 @@ const RegistrationSchema = new mongoose.Schema({
             required: true
         }, 
         peopleCount: {
-            type: String,
+            type: Number,
             required: true
         },
         driverName: {
@@ -38,7 +38,7 @@ const RegistrationSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-        approved: {
+        status: {
             type: Boolean,
             default: false
         },
