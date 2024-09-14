@@ -1,28 +1,78 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const validator = require('validator');
 
-const UserSchema = new mongoose.Schema({
-        name: {
-            type: String,
-            required: true
-        },
-        email: {
-            type: String,
-            required: true
-        },
-        password: {
-            type: String,
-            required: true
-        },
-        role: {
-            type: String,
-            enum: ['user', 'admin'],
-            default: 'user'
-        },
+const Schema = mongoose.Schema;
+
+const userSchema = new Schema({
+    name: {
+        type: String,
+        required: true,
     },
-    {
-        timestamps: true
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
     }
-);
-const User = mongoose.model('User', UserSchema);
-module.exports = User;
+});
 
+// Static method for user registration
+userSchema.statics.signup = async function (name, email, password, role) {
+    // Validation
+    if (!email || !password ) {
+        throw Error("All fields are required for registration.");
+    }
+
+    if (!validator.isEmail(email)) {
+        throw Error("Invalid Email Address.");
+    }
+
+    if (!validator.isStrongPassword(password)) {
+        throw Error('Weak Password. Please use a stronger password.');
+    }
+
+    const exists = await this.findOne({ email });
+
+    if (exists) {
+        throw Error("User with this email already exists.");
+    }
+
+    // Salt - an extra layer of security - e.g., mypasswordj87w38ns9dn - add extra value
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+
+    const user = await this.create({ name, email, password: hash, role: role || 'user' });
+    return user;
+}
+
+// Static method for user login
+userSchema.statics.login = async function (email, password) {
+    if (!email || !password) {
+        throw Error("Both email and password are required for login.");
+    }
+
+    const user = await this.findOne({ email });
+
+    if (!user) {
+        throw Error("Incorrect Email");
+    }
+
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) {
+        throw Error('Incorrect Password');
+    }
+
+    return user;
+}
+
+module.exports = mongoose.model('User', userSchema);

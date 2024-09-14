@@ -1,3 +1,9 @@
+<template>
+  <div class=" bg-gray-100 m-auto">
+    <DataTable :items="items"/>   
+  </div>
+</template>
+
 <script setup>
   import { ref, onMounted } from 'vue'
   import DataTable from '../components/table/DataTable.vue'
@@ -9,13 +15,6 @@
   })
 </script>
 
-<template>
-  <div class=" bg-gray-100 m-auto">
-    <DataTable :items="items"/>   
-  </div>
-  
-</template>
-
-<style scoped>
+<style>
 
 </style>

@@ -68,23 +68,27 @@
     <table class="w-full text-sm text-left text-gray-500">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50">
         <tr>
-          <th class="px-4 py-3">Place</th>
-          <th class="px-4 py-3">Date</th>
-          <th class="px-4 py-3">Time</th>
-          <th class="px-4 py-3">People Count</th>
-          <th class="px-4 py-3">Driver Name</th>
-          <th class="px-4 py-3">Status</th>
+          <th class="px-9 py-3">Place</th>
+          <th class="px-9 py-9">Date</th>
+          <th class="px-9 py-9">Time</th>
+          <th class="px-9 py-9">People Count</th>
+          <th class="px-9 py-9">Driver Name</th>
+          <th class="px-9 py-9">Status</th>
+          <th class="px-9 py-9">View  </th>
         </tr>    
       </thead>
       <tbody class="p-10">
         <tr v-for="(item, index) in filteredItems" :key="index">
-          <td class="px-4 py-3">{{ item.place }}</td>
-          <td class="px-4 py-3">{{ new Date(item.date).getDate() }}-{{ new Date(item.date).getMonth() }}-{{ new Date(item.date).getFullYear() }}</td>
-          <td class="px-4 py-3">{{ item.time }}</td>
-          <td class="px-4 py-3">{{ item.peopleCount }}</td>
-          <td class="px-4 py-3">{{ item.driverName }}</td>
-          <td class="px-4 py-3">
+          <td class="px-9 py-7">{{ item.place }}</td>
+          <td class="px-9 py-7">{{ new Date(item.date).getDate() }}-{{ new Date(item.date).getMonth() }}-{{ new Date(item.date).getFullYear() }}</td>
+          <td class="px-9 py-7">{{ item.time }}</td>
+          <td class="px-9 py-7">{{ item.peopleCount }}</td>
+          <td class="px-9 py-7">{{ item.driverName }}</td>
+          <td class="px-9 py-7">
             <span class="bg-green-200 text-green-600 py-1 px-3 rounded-full text-xs">{{ item.status }}</span>
+          </td>
+          <td class="px-9 py-7">
+            <span class="material-icons">visibility</span>
           </td>
         </tr>
       </tbody>
@@ -92,3 +96,10 @@
   </div>
 </template>
 
+<style scoped>
+.material-icons {
+    font-size: 1.5rem;
+    color: mediumpurple;
+    transition: 0.2s ease-out;
+}
+</style>

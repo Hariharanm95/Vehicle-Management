@@ -8,6 +8,9 @@ const { getDrivers,
         deleteDriver } = require('../controllers/driverControllers.js');
 
 
+// const requireAuth = require('../middleware/requireAuth');
+// router.use(requireAuth);
+
 router.get('/', getDrivers);
 router.get('/:id', getDriver);
 router.post('/', createDriver);

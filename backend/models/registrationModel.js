@@ -32,7 +32,7 @@ const RegistrationSchema = new mongoose.Schema({
         vehicleType: {
             type: String,
             enum: ['bus', 'car', 'tempo', 'goodstruck'],
-            required: true
+            required: true   
         },
         purpose: {
             type: String,

@@ -9,6 +9,8 @@ const { getVehicles,
         deleteVehicle    } = require('../controllers/vehicleControllers.js');
 
 // Use the function as a callback for the route
+// const requireAuth = require('../middleware/requireAuth');
+// router.use(requireAuth);
 router.get('/', getVehicles);
 router.get('/:id', getVehicle);
 router.post('/', createVehicle);

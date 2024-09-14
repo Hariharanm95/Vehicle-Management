@@ -1,64 +1,41 @@
-const User = require('../models/userModel')
-const asyncHandler = require('express-async-handler')
+const User = require('../models/userModel');
+const jwt = require('jsonwebtoken');
 
-const getUsers = asyncHandler(async(req,res)=>{
-    try{
-        const users = await User.find({});
-        res.status(200).json(users)
-    }catch(error){
-        res.status(500)
-        throw new Error(error.message)
-    }
-})
+const createToken = (_id, role) => {
+    return jwt.sign({ _id, role }, process.env.SECRET, { expiresIn: '3d' });
+}
 
-const getUser = asyncHandler(async(req,res)=>{
-    try{
-        const {id} = req.params;
-        const user = await User.findById(id);
-        res.status(200).json(user)
-    }catch(error){
-        res.status(500)
-        throw new Error(error.message)
-    }
-})
+// Login user for the Grievance Forum
+const loginUser = async (req, res) => {
+    const { email, password } = req.body;
 
-const createUser = asyncHandler(async(req,res)=>{
-    try{
-        const user = await User.create(req.body);
-        res.status(200).json(user)
-    }catch(error){
-        res.status(500)
-        throw new Error(error.message)
-    }
-})
+    try {
+        const user = await User.login(email, password);
+        console.log(`Logged in user: ${user.email}, Role: ${user.role}`);
 
-const updateUser = asyncHandler(async(req,res)=>{
-    try{
-        const {id} = req.params;
-        const user = await User.findByIdAndUpdate(id);
-        if(!user) res.status(400).json({message: "User not found"})
-        const updatedUser = await User.findById(id);
-        res.status(200).json(updatedUser)
-    }catch(error){
-        res.status(500)
-        throw new Error(error.message)
-    }
-})
+        // Create a token for the Grievance Forum user
+        const token = createToken(user._id, user.role);
 
-const deleteUser = asyncHandler(async(req,res)=>{
-    try{
-        const {id} = req.params;
-        const user = await User.findByIdAndDelete(id);
-        if(!user) res.status(400).json({message: "User not found"})
-        res.status(200).json({message: "User deleted"})
+        res.status(200).json({ email, token, role: user.role });
     } catch (error) {
-        res.status(500)
-        throw new Error(error.message)
+        res.status(400).json({ error: error.message });
     }
-})
+}
 
-module.exports = {  getUsers,
-                    getUser,
-                    createUser,
-                    updateUser,
-                    deleteUser}
+// Signup user for the Grievance Forum
+const signupUser = async (req, res) => {
+    const { name, email, password, role } = req.body;
+
+    try {
+        const user = await User.signup(name, email, password, role);
+
+        // Create a token for the Grievance Forum user
+        const token = createToken(user._id, user.role);
+
+        res.status(200).json({ name, email, token, role: user.role });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+module.exports = { loginUser, signupUser };

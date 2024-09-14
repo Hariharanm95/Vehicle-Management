@@ -7,6 +7,8 @@ const { getRegistrations,
         updateRegistration,
         deleteRegistration } = require('../controllers/registrationControllers.js');
 
+// const requireAuth = require('../middleware/requireAuth');
+// router.use(requireAuth);
 router.get('/', getRegistrations);
 router.get('/:id', getRegistration);
 router.post('/', createRegistration);
